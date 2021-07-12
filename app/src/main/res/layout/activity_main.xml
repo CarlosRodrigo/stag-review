@@ -16,4 +16,14 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/note_item"/>
 
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        android:layout_marginHorizontal="12dp"
+        app:layout_constraintBottom_toBottomOf="@+id/note_list"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
