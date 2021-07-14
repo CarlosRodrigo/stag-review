@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements OnAdapterItemClic
         mAdapter = new NoteRecyclerViewAdapter(notes, this, this::onAdapterClicked);
         noteRecycler.setAdapter(mAdapter);
 
-        NoteItemTouchHelperCallback itemCallback = new NoteItemTouchHelperCallback(mAdapter);
+        NoteItemTouchHelperCallback itemCallback = new NoteItemTouchHelperCallback(mAdapter, this);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemCallback);
         itemTouchHelper.attachToRecyclerView(noteRecycler);
     }
