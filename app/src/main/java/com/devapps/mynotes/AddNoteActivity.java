@@ -14,6 +14,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private EditText mTitle;
     private EditText mDescription;
+    private int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,18 @@ public class AddNoteActivity extends AppCompatActivity {
         mDescription = findViewById(R.id.editDescription);
 
         setupButton();
+        setupValues();
+    }
+
+    private void setupValues() {
+        Intent intent = getIntent();
+
+        String title = intent.getStringExtra(Constants.EXTRA_KEY_TITLE);
+        String description = intent.getStringExtra(Constants.EXTRA_KEY_DESCRIPTION);
+        mPosition = intent.getIntExtra(Constants.EXTRA_KEY_POSITION, -1);
+
+        mTitle.setText(title);
+        mDescription.setText(description);
     }
 
     private void setupButton() {
@@ -37,8 +50,9 @@ public class AddNoteActivity extends AppCompatActivity {
 
                 // cria intent de retorno
                 Intent intent = new Intent(AddNoteActivity.this, MainActivity.class);
-                intent.putExtra("title", title);
-                intent.putExtra("description", description);
+                intent.putExtra(Constants.EXTRA_KEY_TITLE, title);
+                intent.putExtra(Constants.EXTRA_KEY_DESCRIPTION, description);
+                intent.putExtra(Constants.EXTRA_KEY_POSITION, mPosition);
 
                 // enviar de volta pra main activity
                 setResult(RESULT_OK, intent);

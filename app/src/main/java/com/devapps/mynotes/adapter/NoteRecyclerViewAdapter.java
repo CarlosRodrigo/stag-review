@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.devapps.mynotes.R;
 import com.devapps.mynotes.model.Note;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerViewAdapter.VH> {
 
@@ -21,15 +23,33 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
 
     private ArrayList<Note> notes;
     private Context context;
+    private OnAdapterItemClickListener adapterItemClickListener;
 
-    public NoteRecyclerViewAdapter(ArrayList<Note> notes, Context context) {
+    public NoteRecyclerViewAdapter(ArrayList<Note> notes, Context context,
+                                   OnAdapterItemClickListener listener) {
         this.notes = notes;
         this.context = context;
+        this.adapterItemClickListener = listener;
     }
 
     public void addNote(Note note) {
         this.notes.add(note);
         notifyDataSetChanged();
+    }
+
+    public void updateNote(Note note, int position) {
+        this.notes.set(position, note);
+        notifyDataSetChanged();
+    }
+
+    public void remove(int position) {
+        this.notes.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public void swap(int initPosition, int targetPosition) {
+        Collections.swap(this.notes, initPosition, targetPosition);
+        notifyItemMoved(initPosition, targetPosition);
     }
 
     @NonNull
@@ -55,13 +75,18 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
         return notes.size();
     }
 
-    class VH extends RecyclerView.ViewHolder {
+    public Note getItem(int position) {
+        return notes.get(position);
+    }
+
+    class VH extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title;
         TextView description;
 
         public VH(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             title = itemView.findViewById(R.id.note_item_title);
             description = itemView.findViewById(R.id.note_item_description);
         }
@@ -71,6 +96,10 @@ public class NoteRecyclerViewAdapter extends RecyclerView.Adapter<NoteRecyclerVi
             this.description.setText(description);
         }
 
+        @Override
+        public void onClick(View view) {
+            adapterItemClickListener.onAdapterClicked(getAdapterPosition());
+        }
     }
 
 }
